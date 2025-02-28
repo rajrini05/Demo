@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery & AngularJS Demo</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        #box { width: 50px; height: 50px; background: blue; position: relative; }
+        #colorBox { width: 100px; height: 100px; background: lightgray; }
+    </style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    
+    <h2>jQuery Examples</h2>
+    <button id="togglePara">Toggle Paragraph</button>
+    <p id="paragraph">This is a paragraph.</p>
+    
+    <button id="changeColor">Change Text Color</button>
+    <p id="text">Change my color</p>
+    
+    <button id="moveBox">Move Box Right</button>
+    <div id="box"></div>
+    
+    <button id="fadeToggle">Fade In/Out Paragraph</button>
+    <p id="fadePara">This paragraph fades in and out.</p>
+    
+    <button id="slideToggle">Slide Up/Down</button>
+    <div id="slideDiv" style="background: yellow; padding: 10px;">Slide Me</div>
+    
+    <button id="updateText">Update Text</button>
+    <p id="updatedText">Original Text</p>
+    
+    <div id="colorBox">Hover over me</div>
+    
+    <input type="text" id="inputField">
+    <button id="displayValue">Show Input Value</button>
+    <p id="inputValue"></p>
+    
+    <script>
+        $(document).ready(function() {
+            $('#togglePara').click(function() { $('#paragraph').toggle(); });
+            $('#changeColor').click(function() { $('#text').css('color', 'red'); });
+            $('#moveBox').click(function() { $('#box').animate({ left: '+=50px' }); });
+            $('#fadeToggle').click(function() { $('#fadePara').fadeToggle(); });
+            $('#slideToggle').click(function() { $('#slideDiv').slideToggle(); });
+            $('#updateText').click(function() { $('#updatedText').text('Text has been updated!'); });
+            $('#colorBox').hover(function() { $(this).css('background', 'green'); }, function() { $(this).css('background', 'lightgray'); });
+            $('#displayValue').click(function() { $('#inputValue').text($('#inputField').val()); });
+        });
+    </script>
+    
+    <h2>AngularJS Examples</h2>
+    <input type="text" ng-model="name">
+    <p>Hello, {{ name }}</p>
+    
+    <div>
+        <input type="number" ng-model="num1"> +
+        <input type="number" ng-model="num2">
+        <button ng-click="result = num1 + num2">Calculate</button>
+        <p>Result: {{ result }}</p>
+    </div>
+    
+    <button ng-click="isVisible = !isVisible">Toggle Visibility</button>
+    <p ng-show="isVisible">This content is toggled using ng-show/ng-hide.</p>
+    
+    <div ng-style="{'background-color': bgColor}">
+        <button ng-click="bgColor = 'red'">Red</button>
+        <button ng-click="bgColor = 'blue'">Blue</button>
+    </div>
+    
+    <h3>Stopwatch</h3>
+    <button ng-click="startTimer()">Start</button>
+    <button ng-click="stopTimer()">Stop</button>
+    <button ng-click="resetTimer()">Reset</button>
+    <p>Time: {{ time }} seconds</p>
+    
+    <script>
+        angular.module('myApp', []).controller('myCtrl', function($scope, $interval) {
+            $scope.name = "";
+            $scope.num1 = 0;
+            $scope.num2 = 0;
+            $scope.result = 0;
+            $scope.isVisible = true;
+            $scope.bgColor = 'white';
+            
+            let timer;
+            $scope.time = 0;
+            
+            $scope.startTimer = function() {
+                if (!timer) {
+                    timer = $interval(function() { $scope.time++; }, 1000);
+                }
+            };
+            
+            $scope.stopTimer = function() {
+                if (timer) {
+                    $interval.cancel(timer);
+                    timer = null;
+                }
+            };
+            
+            $scope.resetTimer = function() {
+                $scope.stopTimer();
+                $scope.time = 0;
+            };
+        });
+    </script>
+    
+</body>
+</html>
